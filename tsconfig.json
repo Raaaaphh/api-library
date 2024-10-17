@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2021",
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
     "module": "commonjs",
     "outDir": "./build",
     "strict": true,

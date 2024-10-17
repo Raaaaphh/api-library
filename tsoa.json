@@ -18,6 +18,6 @@
   "routes": {
     "routesDir": "src/routes",
     "routesFileName": "index.ts",
-    "authenticationModule": "src/middleware/authentication.ts"
+    "authenticationModule": "src/middlewares/authentication.ts"
   }
 }
