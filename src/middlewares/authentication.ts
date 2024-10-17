@@ -7,7 +7,7 @@ export function expressAuthentication(
   scopes?: string[]
 ): Promise<any> {
   if (securityName === "jwt") {
-    const token = request.headers.authorization;
+    const token = request.headers.authorization?.split(" ")[1] ?? "";
 
     return new Promise((resolve, reject) => {
       if (!token) {
