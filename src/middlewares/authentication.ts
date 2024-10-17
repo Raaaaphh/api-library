@@ -7,7 +7,7 @@ export function expressAuthentication(
   scopes?: string[]
 ): Promise<any> {
   if (securityName === "jwt") {
-    const token = request.headers.authorization?.split(" ")[1];
+    const token = request.headers.authorization;
 
     return new Promise((resolve, reject) => {
       if (!token) {
@@ -17,15 +17,13 @@ export function expressAuthentication(
       jwt.verify(token, process.env.JWT_SECRET ?? 'your_jwt_secret_key', (err: any, decoded: any) => {
         if (err) {
           return reject(new Error("Token is invalid or expired"));
-        }
-
-        if (scopes !== undefined) {
-          const hasScopes = scopes.every(scope => decoded.scopes.includes(scope));
-          if (!hasScopes) {
-            return reject(new Error("Insufficient scope"));
+        } else {
+          if (scopes !== undefined) {
+            if (scopes.filter((s) => decoded.scopes.includes(s)).length === 0) {
+              reject(new Error("JWT does not contain required scope."));
+            }
           }
         }
-
         resolve(decoded);
       });
     });

@@ -20,13 +20,30 @@ export class AuthenticationService {
             "utf-8"
         );
 
-        // Vérifie si le mot de passe est correct
         if (password === decodedPassword) {
-            // Si l'utilisateur est authentifié, on génère un JWT
-            const token = jwt.sign({ username: user.username }, JWT_SECRET, {
-                expiresIn: "1h",
-            });
+            let scopes;
+
+            switch (username) {
+                case "admin":
+                    scopes = ["user:read", "user:write", "user:delete"];
+                    break;
+                case "gerant":
+                    scopes = ["user:read", "user:write", "user:delete:bookCollection",];
+                    break;
+                default:
+                    scopes = ["user:read", "user:write:book"];
+            }
+
+            const token = jwt.sign(
+                { username: user.username, scopes: scopes },
+                JWT_SECRET,
+                {
+                    expiresIn: "1h",
+                }
+            );
+
             return token;
+
         } else {
             let error = new Error("Wrong password");
             (error as any).status = 403;

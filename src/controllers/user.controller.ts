@@ -19,7 +19,6 @@ import {
 
 @Route("users")
 @Tags("Users")
-//@Security("jwt")
 export class UserController extends Controller {
   @Get("/")
   public async getAllUsers(): Promise<UserOutputDTO[]> {
